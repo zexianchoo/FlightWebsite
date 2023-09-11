@@ -19,10 +19,12 @@
 
 |   Info      |        Description     |
 | ----------- | ---------------------- |
-|  Title      |       ProjectTitle     |
+|  Title      |       Evaluation of Airlines Tool 2015 (EAT 2015)     |
 | System URL  |      link_to_system    |
 | Video Link  |      link_to_video     |
 
 ## Project Summary
 
-This is a summary of the project!
+Evaluation of Airlines Tool 2015 (EAT 2015) is the user's go to choice for selecting their flights, especially if they hate delays. EAT will rank the Airlines in terms of flight delay or cancellation, specifically with reference to user-selected variables like the day of the week, Departure airport or layover preference. 
+
+EAT will also provide data visualization tools that allows consumers or even researchers to easily view the data through customizable scopes and sliders.
