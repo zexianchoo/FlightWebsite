@@ -48,6 +48,8 @@ The user can tweak sliders or interact with our interactive map to visualize the
 
 
 ----
+# UI Mockup:
+![UI Mockup](UI_mockup.png)
 
 
 # Project Work Distribution
@@ -61,3 +63,5 @@ The user can tweak sliders or interact with our interactive map to visualize the
 ## Explain how backend systems will be distributed across members. Be as specific as possible as this could be part of the final peer evaluation metrics.
 
 We will be having weekly meetings where we split the work evenly between the team members. We will have a date where we will git push our updates and then we will have a system where other members would review the updates and then finally integrate it to the final working code.
+
+
