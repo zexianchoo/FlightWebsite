@@ -12,7 +12,7 @@ export const Test = () => {
 
   const getDelays = async () => {
     const response = await axios.get("http://127.0.0.1:5000/get_delays");
-    return response.data; // Assuming the response is the data you want to display
+    return response.data; 
   };
 
   return (
@@ -20,7 +20,7 @@ export const Test = () => {
       <h2>Delays Data</h2>
       <ul>
         {delays.map((delay, index) => (
-          <li key={index}>{JSON.stringify(delay)}</li> // Modify this line to format your data as needed
+          <li key={index}>{JSON.stringify(delay)}</li> 
         ))}
       </ul>
     </div>
