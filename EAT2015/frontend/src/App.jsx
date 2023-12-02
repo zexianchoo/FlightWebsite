@@ -1,8 +1,8 @@
 import React from 'react';
 import Login from './pages/Login';
 import { Home } from './pages/Home';
-import SignUp from "./pages/SIgnUp";
-import Test from "./pages/test";
+import SignUp from "./pages/SignUp";
+import { Test } from "./pages/Test";
 
 import './App.css';
 import {
