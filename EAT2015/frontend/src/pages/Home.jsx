@@ -7,7 +7,7 @@ export const Home = () => {
   const handleSearch = () => {
     console.log('Start Date:', startDate);
     console.log('End Date:', endDate);
-    // Here you would typically make a request to the backend with the startDate and endDate
+    // make a request to the backend with the startDate and endDate after api written 
   };
 
   return (
@@ -23,7 +23,7 @@ export const Home = () => {
             onChange={(e) => setStartDate(e.target.value)}
             min="2015-01-01"
             max="2015-12-31"
-            style={{ marginRight: '10px' }} // Reduced space between the fields
+            style={{ marginRight: '10px' }} 
           />
         </div>
         <div>
