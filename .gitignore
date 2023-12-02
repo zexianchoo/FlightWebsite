@@ -1,2 +1,3 @@
 EAT2015/backend/.env
 EAT2015/backend/flask_session
+.gitignore
