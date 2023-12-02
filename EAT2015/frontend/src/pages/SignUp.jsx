@@ -33,7 +33,7 @@ function SignUp() {
           <p>Username</p>
           <input
               type="text"
-              placeholder="Name"
+              placeholder="Username"
               required
               id="username"
               value={username}
