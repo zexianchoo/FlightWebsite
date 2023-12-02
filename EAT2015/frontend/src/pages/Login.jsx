@@ -1,28 +1,57 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import React from "react"
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
-export const Login = () => {
-  const [delays, setDelays] = useState([]);
+function Login() {
 
-  useEffect(() => {
-    getDelays().then(data => {
-      setDelays(data);
-    });
-  }, []);
+    const [formData, setFormData] = useState({
+      username: "",
+      password: "",
+    })
 
-  const getDelays = async () => {
-    const response = await axios.get("http://127.0.0.1:5000/get_delays");
-    return response.data; 
-  };
+    const {username, password} = formData
 
-  return (
-    <div>
-      <h2>Delays Data</h2>
-      <ul>
-        {delays.map((delay, index) => (
-          <li key={index}>{JSON.stringify(delay)}</li> 
-        ))}
-      </ul>
-    </div>
-  )
+    const onChange = (e) => {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+      }));
+    };
+
+    const navigate = useNavigate();
+
+    const submit = (e) => {
+
+      // check database for user
+
+      navigate("/");
+    }
+      
+    return (
+        <form onSubmit={submit}>
+          <p>Username</p>
+          <input
+              type="text"
+              placeholder="Username"
+              required
+              id="username"
+              value={username}
+              onChange={onChange}
+            />
+            <p>Password</p>
+          <input
+              type="password"
+              placeholder="Password"
+              required
+              id="password"
+              value={password}
+              onChange={onChange}
+            />
+            <button type="submit">
+              Login
+            </button>
+        </form>
+      )
 }
+
+export default Login;
