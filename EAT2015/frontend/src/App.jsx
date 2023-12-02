@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home'
-import SignUp from './pages/SIgnUp.jsx'
+
 import './App.css'
 import {
   BrowserRouter as Router,
@@ -19,7 +19,7 @@ function App() {
         <Routes>
           <Route path = "/" element={<Home /> } />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/signup" element={<SignUp />} /> */}
         </Routes>
       </Router>
     </div>
