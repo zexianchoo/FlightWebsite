@@ -28,29 +28,46 @@ function Login() {
     }
       
     return (
-        <form onSubmit={submit}>
-          <p>Username</p>
-          <input
-              type="text"
-              placeholder="Username"
-              required
-              id="username"
-              value={username}
-              onChange={onChange}
-            />
-            <p>Password</p>
-          <input
-              type="password"
-              placeholder="Password"
-              required
-              id="password"
-              value={password}
-              onChange={onChange}
-            />
-            <button type="submit">
-              Login
-            </button>
+
+      <main className='sm:relative flex-col h-screen'>
+      <h1 className='py-20'>Welcome to EAT2015!</h1>
+      <div className='flex-col space-y-4 items-center h-full text-center '>
+      <form className="flex-col space-y-8 border-2 border-indigo-500/100 justify-center items-center" onSubmit={submit}>
+        <div className="flex align-middle justify-center items-center space-x-20 m-7">
+          <div>
+            <p className="text-2xl">Username</p>
+              <input
+                  type="text"
+                  placeholder="Username"
+                  required
+                  id="username"
+                  value={username}
+                  onChange={onChange}
+                />
+          </div>
+          <div>
+            <p className="text-2xl">Password</p>
+              <input
+                  type="password"
+                  placeholder="Password"
+                  required
+                  id="password"
+                  value={password}
+                  onChange={onChange}
+                />
+          </div>
+
+        </div>
+        
+        <button className="text-xl pb-5" type="submit">
+                Login
+        </button>
         </form>
+      </div>
+    </main>
+
+
+
       )
 }
 
