@@ -1,13 +1,15 @@
 import React from 'react';
 import Login from './pages/Login';
 import { Home } from './pages/Home';
-import SignUp from "./pages/SIgnUp"
+import SignUp from "./pages/SIgnUp";
+import Test from "./pages/test";
+
 import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link // Import Link
+  Link 
 } from "react-router-dom";
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       </Router>
     </div>

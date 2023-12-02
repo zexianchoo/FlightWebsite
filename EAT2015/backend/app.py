@@ -13,7 +13,7 @@ from flask_session import Session
 app = Flask(__name__)
 SESSION_TYPE = 'filesystem'
 app.config.from_object(__name__)
-app.secret_key = os.getenv("APP_SECRET_KEY")
+# app.secret_key = os.getenv("APP_SECRET_KEY")
 app.config["SESSION_COOKIE_SAMESITE"] = "None"
 app.config["SESSION_COOKIE_SECURE"] = True
 Session(app)
@@ -36,11 +36,11 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     ]  # e.g. 'project:region:instance'
     db_user = os.environ["DB_USER"]  # e.g. 'my-db-user'
     db_pass = os.environ["DB_PASS"]  # e.g. 'my-db-password'
-    db_name = os.environ["DB_NAME"]  # e.g. 'my-database'
+    db_name = os.environ["DB_NAME"] # e.g. 'my-database'
 
-    ip_type = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
+    ip_type = IPTypes.PUBLIC
 
-    connector = Connector(ip_type)
+    connector = Connector(ip_type=ip_type)
 
     def getconn() -> pymysql.connections.Connection:
         conn: pymysql.connections.Connection = connector.connect(
@@ -55,20 +55,18 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
         creator=getconn,
-        # ...
     )
     return pool
 
 
 print("SUCCESS")
-@app.route('/get_routes', methods=['GET'])
-def get_routes():
+@app.route('/get_delays', methods=['GET'])
+def get_delays():
     pool = connect_with_connector()
     ans = []
     with pool.connect() as db_conn:
         rows = db_conn.execute(
-            statement=sqlalchemy.text("SELECT RouteLongName FROM Routes WHERE RouteLongName LIKE :route_name"), 
-            parameters=dict(route_name=f"%{request.args.get('search_query')}%")
+            statement=sqlalchemy.text("SELECT * FROM Delays LIMIT 100"), 
         ).fetchall()
         for row in rows:
             ans.append(tuple(row))
