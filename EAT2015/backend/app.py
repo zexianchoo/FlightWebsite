@@ -130,5 +130,23 @@ def del_user():
     pool.dispose()
     return str(None)
 
+@app.route('/get_advanced/', methods=['GET'])
+def get_advanced():
+
+    startDate= request.args.get("startDate")
+    endDate= request.args.get("endDate")
+    dayOfWeek= request.args.get("dayOfWeek")
+
+    pool = connect_with_connector()
+    ans = []
+    with pool.connect().execution_options(isolation_level = "READ UNCOMMITTED") as db_conn:
+        rows = db_conn.execute(
+            statement=sqlalchemy.text("call tran(:week_day, :start_date, :end_date)"), parameters = dict(week_day = dayOfWeek, start_date = startDate, end_date = endDate)
+        ).fetchall()
+        for row in rows:
+            ans.append(tuple(row))
+    pool.dispose()
+    return json.dumps(ans)
+
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)

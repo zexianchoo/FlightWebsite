@@ -11,6 +11,16 @@ export const Home = () => {
     console.log('Start Date:', startDate);
     console.log('End Date:', endDate);
     console.log('Day of Week:', dayOfWeek);
+
+    axios.get("http://127.0.0.1:5000/get_advanced/", {
+      params: {
+        startDate: startDate,
+        endDate: endDate,
+        dayOfWeek: dayOfWeek,
+      }}).then(function (response) {
+        console.log(response.data)
+      })
+
     // make a request to the backend with the startDate, endDate, and dayOfWeek after API is written
   };
 
@@ -100,6 +110,7 @@ export const Home = () => {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button onClick={handleSearch}>Search</button>
         </div>
+        
       </div>
     </main>
   );
