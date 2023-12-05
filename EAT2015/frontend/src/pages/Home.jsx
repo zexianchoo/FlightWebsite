@@ -130,10 +130,13 @@ export const Home = () => {
   
   return (
     <main className='sm:relative flex-col h-screen'>
-
-      <Buttons></Buttons> 
-      <div>
-      <a href="/SearchHistory" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Search History</a>
+      <div className="flex-col p-auto space-y-2">
+        <div>
+          <Buttons></Buttons> 
+        </div>
+        <div>
+          <a href="/SearchHistory" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Search History</a>
+        </div>
       </div>
 
       <h1 className='py-20 font-bold'>Evaluation of Airlines Tool 2015 (EAT 2015)</h1>

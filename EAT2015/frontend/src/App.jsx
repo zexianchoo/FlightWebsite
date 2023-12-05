@@ -18,9 +18,11 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <nav>
-          <Link to="/">Home</Link> | <Link to="/login">Login</Link> | <Link to="/SignUp">Sign Up</Link>
-        </nav>
+      <nav className="flex items-center justify-between py-4 px-6 bg-gray-800 text-white text-xl">
+      <Link to="/" className="font-semibold hover:text-gray-300">Home</Link>
+        <Link to="/login" className="hover:text-gray-300">Login</Link>
+        <Link to="/SignUp" className="hover:text-gray-300">Sign Up</Link>
+    </nav>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
