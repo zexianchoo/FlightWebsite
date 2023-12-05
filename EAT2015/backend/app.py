@@ -93,6 +93,23 @@ def put_user():
         db_conn.commit()
     return str(max + 1)
 
+@app.route('/update_email/', methods=['PUT'])
+def update_email():
+    user_id = request.args.get("user_id")
+    email = request.args.get("email")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        max = tuple(db_conn.execute(
+            statement=sqlalchemy.text("SELECT MAX(user_id) FROM Users"), 
+        ))[0][0]
+
+        print(max)
+        statement=sqlalchemy.text('UPDATE Users SET email = :email WHERE user_id = :user_id')
+        db_conn.execute( statement, parameters = dict(email = email, user_id = user_id))
+        db_conn.commit()
+    return str(max + 1)
+
 @app.route('/get_user/', methods=['GET'])
 def get_user():
     username = request.args.get("username")

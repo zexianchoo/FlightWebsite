@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import { Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const [startDate, setStartDate] = useState('2015-01-01');
@@ -119,6 +120,7 @@ export const Home = () => {
       return ( <>
         <button onClick = {SignOut}>Sign Out</button>
         <button onClick = {Deletion}>Delete Account</button>
+        <Link to="/ChangeEmail">Change Email</Link>
       </>)
     } else {
       return <></>
