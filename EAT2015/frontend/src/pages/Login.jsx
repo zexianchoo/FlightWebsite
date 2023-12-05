@@ -33,6 +33,7 @@ function Login() {
       }})
         .then(function (response) {
           localStorage.setItem("token", response.data);
+          localStorage.setItem('username', username);
           console.log(response.data)
           navigate("/");
         })

@@ -120,7 +120,8 @@ export const Home = () => {
       return ( <>
         <button onClick = {SignOut}>Sign Out</button>
         <button onClick = {Deletion}>Delete Account</button>
-        <Link to="/ChangeEmail">Change Email</Link>
+        <a href="/ChangeEmail" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Change Email</a>
+        {/* <Link to="/ChangeEmail">Change Email</Link> */}
       </>)
     } else {
       return <></>
@@ -129,7 +130,12 @@ export const Home = () => {
   
   return (
     <main className='sm:relative flex-col h-screen'>
+
       <Buttons></Buttons> 
+      <div>
+      <a href="/SearchHistory" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Search History</a>
+      </div>
+
       <h1 className='py-20 font-bold'>Evaluation of Airlines Tool 2015 (EAT 2015)</h1>
       <div className='flex-col space-y-20'>
         <div className='flex-col space-y-4 items-center h-full text-center'>
@@ -198,32 +204,39 @@ export const Home = () => {
           />
         </div>
         {Array.isArray(airlineData) && airlineData.length > 0 && (
-        <table>
-        <thead>
-          <tr>
-            <th>Date of Flight</th>
-            <th>Origin Airport IATA</th>
-            <th>Destination Airport IATA</th>
-            <th>Scheduled Departure</th>
-            <th>Departure Time</th>
-            <th>Scheduled Time</th>
-            <th>Scheduled Arrival</th>
-            <th>Arrival Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(airlineData) && airlineData.slice(1).map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {Array.isArray(row) && row.map((cell, cellIndex) => (
-                cellIndex !== 0 && cellIndex !==2 && cellIndex !== 8 && cellIndex !== 9 && (
-                  <td key={cellIndex}>{cell}</td>
-                )
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      )}
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">Date of Flight</th>
+                <th className="px-4 py-2">Origin Airport IATA</th>
+                <th className="px-4 py-2">Destination Airport IATA</th>
+                <th className="px-4 py-2">Scheduled Departure</th>
+                <th className="px-4 py-2">Departure Time</th>
+                <th className="px-4 py-2">Scheduled Time</th>
+                <th className="px-4 py-2">Scheduled Arrival</th>
+                <th className="px-4 py-2">Arrival Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(airlineData) &&
+                airlineData.slice(1).map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {Array.isArray(row) &&
+                      row.map((cell, cellIndex) => (
+                        cellIndex !== 0 &&
+                        cellIndex !== 2 &&
+                        cellIndex !== 8 &&
+                        cellIndex !== 9 && (
+                          <td key={cellIndex} className="border px-4 py-2">
+                            {cell}
+                          </td>
+                        )
+                      ))}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
       </div>
       
     </main>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './pages/Login';
 import { Home } from './pages/Home';
+import Search  from './pages/Search';
 import SignUp from "./pages/SignUp";
 // import { Test } from "./pages/Test";
 import ChangeEmail from "./pages/ChangeEmail";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/SearchHistory" element={<Search />} />
           <Route path="/ChangeEmail" element ={<ChangeEmail/>} />
         </Routes>
       </Router>

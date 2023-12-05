@@ -179,16 +179,14 @@ def get_airline():
     pool = connect_with_connector()
     ret = []
     with pool.connect() as db_conn:
-        # Correctly bind the parameter in the execute method
         print()
         query = db_conn.execute(
             sqlalchemy.text(f"""SELECT * FROM Flights WHERE AIRLINE = :airline_name ORDER BY date_of_flight DESC LIMIT 10"""),
             {"airline_name": request.args.get('airline_name')}
         )
         rows = query.fetchall()
-        # print(rows[:10])
         for row in rows:
-            ret.append(tuple(row))  # Assuming you want a dictionary format
+            ret.append(tuple(row))  
     pool.dispose()
     return ret
 
@@ -210,6 +208,20 @@ def get_all_airlines():
     pool.dispose()
     return jsonify(ans)  
 
+@app.route('/get_user_search', methods=['GET'])
+def get_user_search():
+    pool = connect_with_connector()
+    ans = []
+    with pool.connect() as db_conn:
+        rows = db_conn.execute(
+            sqlalchemy.text("SELECT * FROM Searches WHERE user_id = :token ORDER BY date_searched DESC LIMIT 50"), 
+            {"token": request.args.get('token')}
+        ).fetchall()
+
+        for row in rows:
+            ans.append(tuple(row))
+    pool.dispose()
+    return jsonify(ans)  
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)
