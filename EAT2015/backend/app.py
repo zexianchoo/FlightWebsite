@@ -5,10 +5,13 @@ import sqlalchemy
 import simplejson as json
 from dotenv import load_dotenv
 
+from flask import jsonify
 from flask import Flask
 from flask_cors import CORS
 from flask import request, session
 from flask_session import Session
+
+import sqlite3 as sql
 
 app = Flask(__name__)
 SESSION_TYPE = 'filesystem'
@@ -59,7 +62,7 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     return pool
 
 
-print("SUCCESS")
+print("CONNECTION SUCCESS")
 @app.route('/get_delays', methods=['GET'])
 def get_delays():
     pool = connect_with_connector()
@@ -73,6 +76,117 @@ def get_delays():
     pool.dispose()
     return json.dumps(ans)
 
+@app.route('/put_user/', methods=['PUT'])
+def put_user():
+    username = request.args.get("username")
+    email = request.args.get("email")
+    password = request.args.get("password")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        db_conn.begin()
+        max = tuple(db_conn.execute(
+            statement=sqlalchemy.text("SELECT MAX(user_id) FROM Users"), 
+        ))[0][0]
+
+        print(max)
+        statement=sqlalchemy.text('INSERT INTO Users (user_id, username, email, password) VALUES (:x, :y, :z, :w)')
+        db_conn.execute( statement, parameters = dict(x = max + 1, y = username, z = email, w = password))
+        db_conn.commit()
+    pool.dispose()
+    return str(max + 1)
+
+@app.route('/get_user/', methods=['GET'])
+def get_user():
+    username = request.args.get("username")
+    password = request.args.get("password")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        db_conn.begin()
+        max = tuple(db_conn.execute(
+            statement=sqlalchemy.text("SELECT MAX(user_id) FROM Users WHERE username = :user AND password = :code"), 
+             parameters = dict(user = username, code = password)
+        ))[0][0]
+
+        assert(max != None)
+
+        print(max)
+    pool.dispose()
+    return str(max)
+
+@app.route('/del_user/', methods=['DELETE'])
+def del_user():
+    user_id= request.args.get("user_id")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        db_conn.begin()
+        db_conn.execute(
+            statement=sqlalchemy.text("DELETE FROM Users WHERE user_id = :user_id"), 
+            parameters = dict(user_id = user_id)
+        )
+        db_conn.commit()
+
+    pool.dispose()
+    return str(None)
+
+@app.route('/get_advanced/', methods=['GET'])
+def get_advanced():
+
+    startDate= request.args.get("startDate")
+    endDate= request.args.get("endDate")
+    dayOfWeek= request.args.get("dayOfWeek")
+
+    pool = connect_with_connector()
+    ans = []
+    with pool.connect().execution_options(isolation_level = "READ UNCOMMITTED") as db_conn:
+        rows = db_conn.execute(
+            statement=sqlalchemy.text("call tran(:week_day, :start_date, :end_date)"), parameters = dict(week_day = dayOfWeek, start_date = startDate, end_date = endDate)
+        ).fetchall()
+        for row in rows:
+            ans.append(tuple(row))
+    pool.dispose()
+    return json.dumps(ans)
+
+@app.route('/get_airline', methods=['GET'])
+def get_airline():
+    pool = connect_with_connector()
+    ret = []
+    with pool.connect() as db_conn:
+        # Correctly bind the parameter in the execute method
+        print()
+        query = db_conn.execute(
+            sqlalchemy.text("SELECT * FROM Flights WHERE AIRLINE = :airline_name LIMIT 10"),
+            {"airline_name": request.args.get('airline_name')}
+        )
+        rows = query.fetchall()
+        # print(rows[:10])
+        for row in rows:
+            ret.append(tuple(row))  # Assuming you want a dictionary format
+    pool.dispose()
+    return ret
+
+# Route for getting all airlines
+@app.route('/get_all_airlines', methods=['GET'])
+def get_all_airlines():
+    pool = connect_with_connector()
+    ans = []
+    with pool.connect() as db_conn:
+        rows = db_conn.execute(
+            statement=sqlalchemy.text("SELECT * FROM Airlines"), 
+        ).fetchall()
+
+        for row in rows:
+            airline_data = {
+                'IATA_CODE': row[0],  
+                'AIRLINE': row[1],
+            }
+            ans.append(airline_data)
+    pool.dispose()
+    print("got here")
+    print(ans)
+    return jsonify(ans)  
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)
