@@ -1,6 +1,7 @@
 import React from "react"
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
 
@@ -23,8 +24,18 @@ function Login() {
     const submit = (e) => {
 
       // check database for user
+      e.preventDefault();
 
-      navigate("/");
+      axios.get("http://127.0.0.1:5000/get_user/", {
+      params: {
+        username: username,
+        password: password,
+      }})
+        .then(function (response) {
+          localStorage.setItem("token", response.data);
+          console.log(response.data)
+          navigate("/");
+        })
     }
       
     return (

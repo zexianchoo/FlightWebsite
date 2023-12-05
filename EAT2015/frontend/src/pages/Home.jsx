@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const [startDate, setStartDate] = useState('2015-01-01');
@@ -12,8 +14,40 @@ export const Home = () => {
     // make a request to the backend with the startDate, endDate, and dayOfWeek after API is written
   };
 
+  const account = localStorage.getItem("token")
+  const navigate = useNavigate();
+
+  const SignOut = (e) => {
+    console.log(account)
+    localStorage.removeItem("token")
+    console.log(localStorage.getItem("token"))
+    navigate("/")
+  }
+
+  const Deletion = (e) => {
+    axios.delete("http://127.0.0.1:5000/del_user/", {
+      params: {
+        user_id: account,
+      }}).then(function (response) {
+        SignOut()
+      })
+    
+  }
+
+  function Buttons() {
+    if (account) {
+      return ( <>
+        <button onClick = {SignOut}>Sign Out</button>
+        <button onClick = {Deletion}>Delete Account</button>
+      </>)
+    } else {
+      return <></>
+    }
+  }
+
   return (
-    <main className='sm:relative flex-col h-screen'>
+    <main className='sm:relative flex-col h-screen'>   
+      <Buttons></Buttons> 
       <h1 className='py-20'>Search for Flight Data in 2015</h1>
       <div className='flex-col space-y-4 items-center h-full text-center'>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>

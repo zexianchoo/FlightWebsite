@@ -10,6 +10,8 @@ from flask_cors import CORS
 from flask import request, session
 from flask_session import Session
 
+import sqlite3 as sql
+
 app = Flask(__name__)
 SESSION_TYPE = 'filesystem'
 app.config.from_object(__name__)
@@ -73,6 +75,60 @@ def get_delays():
     pool.dispose()
     return json.dumps(ans)
 
+@app.route('/put_user/', methods=['PUT'])
+def put_user():
+    username = request.args.get("username")
+    email = request.args.get("email")
+    password = request.args.get("password")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        db_conn.begin()
+        max = tuple(db_conn.execute(
+            statement=sqlalchemy.text("SELECT MAX(user_id) FROM Users"), 
+        ))[0][0]
+
+        print(max)
+        statement=sqlalchemy.text('INSERT INTO Users (user_id, username, email, password) VALUES (:x, :y, :z, :w)')
+        db_conn.execute( statement, parameters = dict(x = max + 1, y = username, z = email, w = password))
+        db_conn.commit()
+    pool.dispose()
+    return str(max + 1)
+
+@app.route('/get_user/', methods=['GET'])
+def get_user():
+    username = request.args.get("username")
+    password = request.args.get("password")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        db_conn.begin()
+        max = tuple(db_conn.execute(
+            statement=sqlalchemy.text("SELECT MAX(user_id) FROM Users WHERE username = :user AND password = :code"), 
+             parameters = dict(user = username, code = password)
+        ))[0][0]
+
+        assert(max != None)
+
+        print(max)
+    pool.dispose()
+    return str(max)
+
+@app.route('/del_user/', methods=['DELETE'])
+def del_user():
+    user_id= request.args.get("user_id")
+
+    pool = connect_with_connector()
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        db_conn.begin()
+        db_conn.execute(
+            statement=sqlalchemy.text("DELETE FROM Users WHERE user_id = :user_id"), 
+            parameters = dict(user_id = user_id)
+        )
+        db_conn.commit()
+
+    pool.dispose()
+    return str(None)
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)

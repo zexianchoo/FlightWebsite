@@ -1,6 +1,7 @@
 import React from "react"
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SignUp() {
 
@@ -23,9 +24,38 @@ function SignUp() {
 
     const submit = (e) => {
 
-      // Add user data to database
+      e.preventDefault();
+      
 
-      navigate("/");
+      // var data = JSON.stringify({
+      //   name: username,
+      //   email: email,
+      //   password: password,
+      // });
+
+      // var config = {
+      //   method: "PUT",
+      //   url: "http://127.0.0.1:5000/put_user/",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   data: data,
+      // };
+  
+      axios.put("http://127.0.0.1:5000/put_user/", null, {
+      params: {
+        username: username,
+        email: email,
+        password: password,
+      }})
+        .then(function (response) {
+          localStorage.setItem("token", response.data);
+          console.log(response.data)
+          navigate("/");
+        })
+      
+
+      
     }
       
     return (
@@ -62,7 +92,6 @@ function SignUp() {
               <input
                 type="email"
                 placeholder="Email"
-                required
                 id="email"
                 value={email}
                 onChange={onChange}
