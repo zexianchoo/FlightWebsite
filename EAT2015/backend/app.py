@@ -11,8 +11,7 @@ from flask_cors import CORS
 from flask import request, session
 from flask_session import Session
 
-import sqlite3 as sql
-
+from datetime import datetime
 app = Flask(__name__)
 SESSION_TYPE = 'filesystem'
 app.config.from_object(__name__)
@@ -84,7 +83,6 @@ def put_user():
 
     pool = connect_with_connector()
     with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
-        db_conn.begin()
         max = tuple(db_conn.execute(
             statement=sqlalchemy.text("SELECT MAX(user_id) FROM Users"), 
         ))[0][0]
@@ -93,7 +91,6 @@ def put_user():
         statement=sqlalchemy.text('INSERT INTO Users (user_id, username, email, password) VALUES (:x, :y, :z, :w)')
         db_conn.execute( statement, parameters = dict(x = max + 1, y = username, z = email, w = password))
         db_conn.commit()
-    pool.dispose()
     return str(max + 1)
 
 @app.route('/get_user/', methods=['GET'])
@@ -131,16 +128,27 @@ def del_user():
     pool.dispose()
     return str(None)
 
-@app.route('/get_advanced/', methods=['GET'])
+@app.route('/get_advanced/', methods=['PUT'])
 def get_advanced():
 
+    user_id= request.args.get("user_id")
     startDate= request.args.get("startDate")
     endDate= request.args.get("endDate")
     dayOfWeek= request.args.get("dayOfWeek")
 
     pool = connect_with_connector()
     ans = []
-    with pool.connect().execution_options(isolation_level = "READ UNCOMMITTED") as db_conn:
+    with pool.connect().execution_options(isolation_level = "SERIALIZABLE") as db_conn:
+        if user_id != None:
+            db_conn.begin()
+            max = tuple(db_conn.execute(
+                statement=sqlalchemy.text("SELECT MAX(search_id) FROM Searches"), 
+            ))[0][0]
+
+            statement=sqlalchemy.text('INSERT INTO Searches (search_id, date_searched, search_start_date, search_end_date, search_airline, user_id) VALUES (:a, :b, :c, :d, :e, :f)')
+            db_conn.execute( statement, parameters = dict(a = max + 1, b = str(datetime.now()), c = startDate, d = endDate, e = "AA", f = str(user_id)))
+            db_conn.commit()
+        
         rows = db_conn.execute(
             statement=sqlalchemy.text("call tran(:week_day, :start_date, :end_date)"), parameters = dict(week_day = dayOfWeek, start_date = startDate, end_date = endDate)
         ).fetchall()

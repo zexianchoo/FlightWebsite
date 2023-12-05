@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const [startDate, setStartDate] = useState('2015-01-01');
@@ -13,6 +14,18 @@ export const Home = () => {
     console.log('Start Date:', startDate);
     console.log('End Date:', endDate);
     console.log('Day of Week:', dayOfWeek);
+    axios.put("http://127.0.0.1:5000/get_advanced/", null, {
+      params: {
+        startDate: startDate,
+        endDate: endDate,
+        dayOfWeek: dayOfWeek,
+        user_id: account,
+      }}).then(function (response) {
+        console.log(response.data)
+
+        document.getElementById("data").innerHTML = JSON.stringify(response.data)
+      })
+
   };
 
 
@@ -80,8 +93,41 @@ export const Home = () => {
   
   }, [selectedAirline]);
 
+
+  const account = localStorage.getItem("token")
+  const navigate = useNavigate();
+
+  const SignOut = (e) => {
+    console.log(account)
+    localStorage.removeItem("token")
+    console.log(localStorage.getItem("token"))
+    navigate("/")
+  }
+
+  const Deletion = (e) => {
+    axios.delete("http://127.0.0.1:5000/del_user/", {
+      params: {
+        user_id: account,
+      }}).then(function (response) {
+        SignOut()
+      })
+    
+  }
+
+  function Buttons() {
+    if (account) {
+      return ( <>
+        <button onClick = {SignOut}>Sign Out</button>
+        <button onClick = {Deletion}>Delete Account</button>
+      </>)
+    } else {
+      return <></>
+    }
+  }
+  
   return (
     <main className='sm:relative flex-col h-screen'>
+      <Buttons></Buttons> 
       <h1 className='py-20 font-bold'>Evaluation of Airlines Tool 2015 (EAT 2015)</h1>
       <div className='flex-col space-y-20'>
         <div className='flex-col space-y-4 items-center h-full text-center'>
@@ -160,7 +206,7 @@ export const Home = () => {
           )}
 
         </div>
-        
+        <div id="data"></div>
       </div>
       
     </main>
