@@ -3,7 +3,7 @@ import Login from './pages/Login';
 import { Home } from './pages/Home';
 import SignUp from "./pages/SignUp";
 // import { Test } from "./pages/Test";
-// import ChangeEmail from "./pages/ChangeEmail";
+import ChangeEmail from "./pages/ChangeEmail";
 
 import './App.css';
 import {
@@ -24,7 +24,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
-          {/* <Route path="/ChangeEmail" element ={<ChangeEmail/>} /> */}
+          <Route path="/ChangeEmail" element ={<ChangeEmail/>} />
         </Routes>
       </Router>
     </div>
