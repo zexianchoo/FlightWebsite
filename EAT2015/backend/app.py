@@ -192,8 +192,6 @@ def get_all_airlines():
             }
             ans.append(airline_data)
     pool.dispose()
-    print("got here")
-    print(ans)
     return jsonify(ans)  
 
 if __name__ == "__main__":

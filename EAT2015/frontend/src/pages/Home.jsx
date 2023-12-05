@@ -181,6 +181,7 @@ export const Home = () => {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button onClick={handleSearch}>Search</button>
         </div>
+        <div id="data"></div>
 
         </div>
         <div>
@@ -206,7 +207,6 @@ export const Home = () => {
           )}
 
         </div>
-        <div id="data"></div>
       </div>
       
     </main>
