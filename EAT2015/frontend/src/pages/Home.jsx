@@ -197,18 +197,33 @@ export const Home = () => {
               styles={customStyles}
           />
         </div>
-        <div>
-          {airlineData && (
-              <ul>
-              {Array.isArray(airlineData) && airlineData.map((item, index) => (
-                <li key={index}>
-                  {index}: {Array.isArray(item) ? "[" + item.join(", ") + "]" : item}
-                </li>
+        {Array.isArray(airlineData) && airlineData.length > 0 && (
+        <table>
+        <thead>
+          <tr>
+            <th>Date of Flight</th>
+            <th>Origin Airport IATA</th>
+            <th>Destination Airport IATA</th>
+            <th>Scheduled Departure</th>
+            <th>Departure Time</th>
+            <th>Scheduled Time</th>
+            <th>Scheduled Arrival</th>
+            <th>Arrival Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(airlineData) && airlineData.slice(1).map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {Array.isArray(row) && row.map((cell, cellIndex) => (
+                cellIndex !== 0 && cellIndex !==2 && cellIndex !== 8 && cellIndex !== 9 && (
+                  <td key={cellIndex}>{cell}</td>
+                )
               ))}
-            </ul>
-          )}
-
-        </div>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      )}
       </div>
       
     </main>

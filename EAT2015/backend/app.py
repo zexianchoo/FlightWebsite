@@ -182,7 +182,7 @@ def get_airline():
         # Correctly bind the parameter in the execute method
         print()
         query = db_conn.execute(
-            sqlalchemy.text("SELECT * FROM Flights WHERE AIRLINE = :airline_name LIMIT 10"),
+            sqlalchemy.text(f"""SELECT * FROM Flights WHERE AIRLINE = :airline_name ORDER BY date_of_flight DESC LIMIT 10"""),
             {"airline_name": request.args.get('airline_name')}
         )
         rows = query.fetchall()
@@ -192,7 +192,6 @@ def get_airline():
     pool.dispose()
     return ret
 
-# Route for getting all airlines
 @app.route('/get_all_airlines', methods=['GET'])
 def get_all_airlines():
     pool = connect_with_connector()
@@ -210,6 +209,7 @@ def get_all_airlines():
             ans.append(airline_data)
     pool.dispose()
     return jsonify(ans)  
+
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)
