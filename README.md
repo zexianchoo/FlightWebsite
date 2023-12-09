@@ -1,4 +1,4 @@
-# team112-orange
+# Evaluation of Airline Tool (EAT2015)
 
 
 To use:
