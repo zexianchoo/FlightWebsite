@@ -1,5 +1,7 @@
 # Evaluation of Airline Tool (EAT2015)
 
+Search for favourite airlines and their flight/cancellation data in 2015.  
+
 Tool which references kaggle dataset https://www.kaggle.com/datasets/usdot/flight-delays. Data is hosted on SQL on Google Cloud Platform.
 EAT2015 is a full-stack website which calls GCP API, with a pretty frontend.
 
