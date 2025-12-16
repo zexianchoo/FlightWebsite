@@ -31,7 +31,7 @@ pycparser==2.21
 PyMySQL==1.1.0
 python-dotenv==1.0.0
 requests==2.31.0
-rsa==4.9
+rsa==4.9.1
 simplejson==3.19.2
 SQLAlchemy==2.0.23
 typing_extensions==4.8.0
