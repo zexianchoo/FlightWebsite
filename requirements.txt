@@ -33,7 +33,7 @@ python-dotenv==1.0.0
 requests==2.31.0
 rsa==4.9
 simplejson==3.19.2
-SQLAlchemy==2.0.23
+SQLAlchemy==2.0.46
 typing_extensions==4.8.0
 urllib3==2.1.0
 Werkzeug==3.0.1
